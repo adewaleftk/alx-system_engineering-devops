@@ -1,0 +1,2 @@
+#!/bin/bash
+cat /dev/stdin | tail +2 | cut -f 1 | sort | uniq -c  | sort -nr  | head -n 11 | tr -s "[[:space:]]" | cut -d " " -f 3
