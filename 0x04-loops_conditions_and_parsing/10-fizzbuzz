@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# display numbers from 1 to 100
+#	display "FizzBuzz" when the number is a multiple of 3 and 5"
+#	display "Fizz" when the number is a multiple of 3
+#	display "Buzz" when the number is a multiple of 5
+#	otherwise, display the number
+
+i=1
+while ((i <= 100))
+do
+	if ((i % 5 == 0 && i % 3 == 0))
+	then
+		echo "FizzBuzz"
+	elif ((i % 3 == 0))
+	then
+		echo "Fizz"
+	elif ((i % 5 == 0))
+	then
+		echo "Buzz"
+	else
+		echo $i
+	fi
+	((i++))
+done
