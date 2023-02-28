@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Display the content of the file /etc/passwd
+
+while read line
+do
+  username=$(echo "$line" | cut -d':' -f1)
+  userid=$(echo "$line" | cut -d':' -f3)
+  home=$(echo "$line" | cut -d':' -f6)
+  
+  echo "Username: $username"
+  echo "User ID: $userid"
+  echo "Home directory: $home"
+  echo ""
+done < /etc/passwd
+
