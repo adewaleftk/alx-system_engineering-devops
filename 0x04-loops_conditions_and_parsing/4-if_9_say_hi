@@ -1,0 +1,17 @@
+#!/bin/bash
+# Define a variable to store the text to display
+
+i=1
+while [ $i -le 10 ]
+do
+  if [ $i -eq 9 ]
+  then
+    echo "Best School"
+    echo "Hi"
+  else
+    echo "Best School"
+  fi
+  
+  i=$((i+1))
+done
+
