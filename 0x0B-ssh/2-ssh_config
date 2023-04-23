@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Set variables
+server_ip="100.25.153.69"
+username="ubuntu"
+key_path="~/.ssh/school"
+
+# Create or edit the SSH configuration file
+echo "Host myserver
+  HostName $server_ip
+  User $username
+  IdentityFile $key_path
+  PreferredAuthentications publickey
+  PasswordAuthentication no" > ~/.ssh/config
+
+# Set correct permissions on the configuration file
+chmod 600 ~/.ssh/config
+
+# Connect to the server
+ssh myserver
+
