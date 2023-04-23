@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Set the SSH public key
+SSH_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNdtrNGtTXe5Tp1EJQop8mOSAuRGLjJ6DW4PqX4wId/Kawz35ESampIqHSOTJmbQ8UlxdJuk0gAXKk3Ncle4safGYqM/VeDK3LN5iAJxf4kcaxNtS3eVxWBE5iF3FbIjOqwxw5Lf5sRa5yXxA8HfWidhbIG5TqKL922hPgsCGABIrXRlfZYeC0FEuPWdr6smOElSVvIXthRWp9cr685KdCI+COxlj1RdVsvIo+zunmLACF9PYdjB2s96Fn0ocD3c5SGLvDOFCyvDojSAOyE70ebIElnskKsDTGwfT4P6jh9OBzTyQEIS2jOaE5RQq4IB4DsMhvbjDSQrP0MdCLgwkN"
+
+# Create the authorized_keys file if it doesn't exist
+sudo mkdir -p /home/ubuntu/.ssh/
+sudo touch /home/ubuntu/.ssh/authorized_keys
+
+# Add the SSH public key to the authorized_keys file
+sudo bash -c "echo $SSH_KEY >> /home/ubuntu/.ssh/authorized_keys"
+
+# Set the correct permissions on the authorized_keys file
+sudo chmod 600 /home/ubuntu/.ssh/authorized_keys
+
+# Set the correct ownership on the .ssh directory and authorized_keys file
+sudo chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+
