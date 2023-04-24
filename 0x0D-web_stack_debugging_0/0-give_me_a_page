@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Install Apache web server
+apt-get update
+apt-get install apache2 -y
+
+# Create a new file called `index.html` in the `/var/www/html` directory
+echo "Hello Holberton" > /var/www/html/index.html
+
+# Restart the Apache web server
+service apache2 restart
+
