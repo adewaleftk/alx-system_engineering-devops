@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# redirection
+
+# Install Nginx
+sudo apt-get update
+sudo apt-get -y install nginx
+
+# Configure firewall to allow HTTP traffic
+sudo ufw allow 'Nginx HTTP'
+
+# Set up domain name
+DOMAIN_NAME="example.com"
+sudo echo "server {
+    listen 80;
+    listen [::]:80;
+
+    server_name $DOMAIN_NAME;
+
+    location / {
+        return 301 https://www.$DOMAIN_NAME$request_uri;
+    }
+
+    location /redirect_me {
+        return 301 https://www.google.com/;
+    }
+}" > /etc/nginx/sites-available/$DOMAIN_NAME
+
+sudo ln -s /etc/nginx/sites-available/$DOMAIN_NAME /etc/nginx/sites-enabled/
+sudo rm /etc/nginx/sites-enabled/default
+
+# Restart Nginx
+sudo service nginx restart
+
