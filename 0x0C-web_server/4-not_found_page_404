@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# error 404
+
+# Install Nginx
+sudo apt-get update
+sudo apt-get install nginx -y
+
+# Configure redirect
+sudo sed -i '28i\        rewrite ^/redirect_me https://www.youtube.com/watch?v=dQw4w9WgXcQ permanent;' /etc/nginx/sites-available/default
+
+# Create custom 404 page
+sudo echo "Ceci n'est pas une page." | sudo tee /usr/share/nginx/html/custom_404.html
+
+# Update Nginx config to use custom 404 page
+sudo sed -i '42i\        error_page 404 /custom_404.html;' /etc/nginx/sites-available/default
+
+# Restart Nginx
+sudo service nginx restart
+
