@@ -1,12 +1,22 @@
 #!/usr/bin/env bash
+# custom http response
 
-# Update package lists and install Nginx
+# Update system packages
 sudo apt-get update
-sudo apt-get -y install nginx
+sudo apt-get upgrade -y
 
-# Set custom header
-echo 'add_header X-Served-By $hostname;' | sudo tee -a /etc/nginx/sites-available/default > /dev/null
+# Install Nginx if not already installed
+if [ ! -x "$(command -v nginx)" ]; then
+    sudo apt-get install -y nginx
+fi
 
-# Restart Nginx
+# Copy Nginx configuration from web-01 to web-02
+scp /etc/nginx/sites-available/default ubuntu@<web-02 IP>:/tmp/default
+ssh ubuntu@<web-02 IP> sudo mv /tmp/default /etc/nginx/sites-available/default
+
+# Add custom header to Nginx configuration on both web servers
+sudo sed -i 's/# server_tokens off;/server_tokens off;\n        add_header X-Served-By $hostname;/g' /etc/nginx/nginx.conf
+
+# Restart Nginx on both web servers
 sudo systemctl restart nginx
 
