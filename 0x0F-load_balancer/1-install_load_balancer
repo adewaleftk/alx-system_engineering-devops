@@ -1,45 +1,13 @@
 #!/usr/bin/env bash
-# Update package list and install HAproxy
+# Install and configure HAProxy load balancer
 
-sudo apt-get update
+sudo apt-get -y update
 sudo apt-get install -y haproxy
 
-# Enable HAproxy service to be managed via init script
-sudo systemctl enable haproxy
+# Enable load balancer
+sudo sed -i "8 a\ENABLED=1\n" /etc/default/haproxy
 
-# Configure HAproxy to send traffic to web-01 and web-02 with round-robin algorithm
-cat << EOF | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
-global
-    log /dev/log local0
-    log /dev/log local1 notice
-    chroot /var/lib/haproxy
-    stats socket /run/haproxy/admin.sock mode 660 level admin
-    stats timeout 30s
-    user haproxy
-    group haproxy
-    daemon
+# Config load balancer with web servers
+sudo sed -i "$ a\ \nfrontend load_balancer\n\tbind\t0.0.0.0:80\n\tmode\thttp\n\tdefault_backend\tweb_servers\n\nbackend web_servers\n\tbalance\troundrobin\n\tserver\t171919-web-01\t54.236.25.34:80\n\tserver\t171919-web-02\t54.236.25.34:80" /etc/haproxy/haproxy.cfg
 
-defaults
-    log global
-    mode http
-    option httplog
-    option dontlognull
-    timeout connect 5000
-    timeout client 50000
-    timeout server 50000
-
-frontend http_front
-    bind *:80
-    mode http
-    default_backend http_back
-
-backend http_back
-    mode http
-    balance roundrobin
-    server web-01 STUDENT_ID-web-01:80 check
-    server web-02 STUDENT_ID-web-02:80 check
-EOF
-
-# Reload HAproxy service to apply changes
-sudo systemctl reload haproxy
-
+sudo service haproxy start
