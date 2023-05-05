@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Install load balancer
 
 # Install HAProxy
 sudo apt-get update
@@ -14,8 +15,8 @@ frontend http_front
 backend http_back
     mode http
     balance roundrobin
-    server web-01 [STUDENT_ID]-web-01:80 check
-    server web-02 [STUDENT_ID]-web-02:80 check
+    server web-01 171919-web-01:80 check
+    server web-02 171919-web-02:80 check
 EOF
 
 # Enable HAProxy init script
