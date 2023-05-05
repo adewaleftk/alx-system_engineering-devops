@@ -11,8 +11,8 @@ if [ ! -x "$(command -v nginx)" ]; then
 fi
 
 # Copy Nginx configuration from web-01 to web-02
-scp /etc/nginx/sites-available/default ubuntu@<web-02 IP>:/tmp/default
-ssh ubuntu@<web-02 IP> sudo mv /tmp/default /etc/nginx/sites-available/default
+scp /etc/nginx/sites-available/default ubuntu@<web-02 54.174.243.119>:/tmp/default
+ssh ubuntu@<web-02 54.174.243.119> sudo mv /tmp/default /etc/nginx/sites-available/default
 
 # Add custom header to Nginx configuration on both web servers
 sudo sed -i 's/# server_tokens off;/server_tokens off;\n        add_header X-Served-By $hostname;/g' /etc/nginx/nginx.conf
