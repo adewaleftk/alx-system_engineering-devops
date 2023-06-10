@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 # Fixing the web server to return Hello Holberton
 
+# Start the Docker container
 docker run -p 8080:80 -d -it holbertonschool/265-0
-docker exec -it $(container_id) /bin/bash
-cd /etc/apache2/sites-available
-DirectoryIndex index.html
-service apache2 restart
-exit
-curl 0:8080
+
+# Get the container ID
+container_id=$(docker ps -lq)
+
+# Execute commands inside the container
+docker exec -it "$container_id" /bin/bash -c '
+  cd /etc/apache2/sites-available || exit
+  echo "DirectoryIndex index.html" >> 000-default.conf
+  service apache2 restart
+'
+
+# Test the web server
+curl http://localhost:8080
 
