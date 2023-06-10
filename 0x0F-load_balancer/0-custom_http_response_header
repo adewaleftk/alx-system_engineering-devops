@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # custom http response
 
-
 # Update packages
 sudo apt-get update
 
@@ -9,7 +8,7 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 # Add custom HTTP header to Nginx configuration
-sudo sed -i '/server {/a add_header X-Served-By 171919-web-01;' /etc/nginx/sites-available/default
+echo 'add_header X-Served-By $hostname;' | sudo tee -a /etc/nginx/sites-available/default > /dev/null
 
 # Test Nginx configuration
 sudo nginx -t
