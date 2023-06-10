@@ -10,7 +10,7 @@ container_id=$(docker ps -lq)
 # Execute commands inside the container
 docker exec -it "$container_id" /bin/bash -c '
   cd /var/www/html || exit
-  echo "apache2 is running" >> index.html
+  echo "apache2 is running" > index.html
   service apache2 restart
 '
 
