@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
+# Fixing the web server to return Hello Holberton
 
-# Install Apache web server
-apt-get update
-apt-get install apache2 -y
-
-# Create a new file called `index.html` in the `/var/www/html` directory
-echo "Hello Holberton" > /var/www/html/index.html
-
-# Restart the Apache web server
+docker run -p 8080:80 -d -it holbertonschool/265-0
+docker exec -it $(container_id) /bin/bash
+cd /etc/apache2/sites-available
+DirectoryIndex index.html
 service apache2 restart
+exit
+curl 0:8080
 
