@@ -12,8 +12,9 @@ docker exec -it "$container_id" /bin/bash -c '
   cd /etc/apache2/sites-available || exit
   echo "DirectoryIndex index.html" >> 000-default.conf
   service apache2 restart
+  sleep 2
+  service apache2 status
 '
 
 # Test the web server
 curl http://localhost:8080
-
