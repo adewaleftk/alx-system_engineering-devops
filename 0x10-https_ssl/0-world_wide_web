@@ -1,23 +1,19 @@
 #!/bin/env bash
-#configuring subdomain with https
+# Configuring sub-domains
 
-domain=$1
-subdomain=$2
-
-function get_subdomain_info() {
-  local subdomain=$1
-  local record_type=$(dig $subdomain.$domain | awk '/^'$subdomain'\.'$domain'\./ {print $4}')
-  local destination=$(dig $subdomain.$domain | awk '/^'$subdomain'\.'$domain'\./ {print $5}')
-  
-  echo "The subdomain $subdomain is a $record_type record and points to $destination"
-}
+domain="$1"
+subdomain="$2"
 
 if [ -z "$subdomain" ]; then
-  get_subdomain_info "www"
-  get_subdomain_info "lb-01"
-  get_subdomain_info "web-01"
-  get_subdomain_info "web-02"
+  subdomains=("www" "lb-01" "web-01" "web-02")
 else
-  get_subdomain_info $subdomain
+  subdomains=("$subdomain")
 fi
+
+for sub in "${subdomains[@]}"; do
+  result=$(dig "$sub.$domain" +short)
+  record_type=$(dig "$sub.$domain" +short | awk '{ print $4 }')
+
+  echo "The subdomain $sub is a $record_type record and points to $result"
+done
 
