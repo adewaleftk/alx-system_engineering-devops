@@ -1,19 +1,26 @@
-#!/usr/bin/env bash
-# Configuring sub-domains
+#!/usrbin/env bash
+# Function to display subdomain information
 
-domain="$1"
-subdomain="$2"
+display_subdomain_info() {
+    local domain=$1
+    local subdomain=$2
+    local record_type=$(dig $subdomain.$domain | awk '/ANSWER SECTION/ {getline; print $4}')
+    local destination=$(dig $subdomain.$domain | awk '/ANSWER SECTION/ {getline; print $5}')
 
-if [ -z "$subdomain" ]; then
-  subdomains=("www" "lb-01" "web-01" "web-02")
+    echo "The subdomain $subdomain is a $record_type record and points to $destination"
+}
+
+# Main script
+domain=$1
+subdomain=$2
+
+# Display information for specified subdomain or default subdomains
+if [ -n "$subdomain" ]; then
+    display_subdomain_info $domain $subdomain
 else
-  subdomains=("$subdomain")
+    display_subdomain_info $domain www
+    display_subdomain_info $domain lb-01
+    display_subdomain_info $domain web-01
+    display_subdomain_info $domain web-02
 fi
-
-for sub in "${subdomains[@]}"; do
-  result=$(dig "$sub.$domain" +short)
-  record_type=$(dig "$sub.$domain" +short | awk '{ print $4 }')
-
-  echo "The subdomain $sub is a $record_type record and points to $result"
-done
 
