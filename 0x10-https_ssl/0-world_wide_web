@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 #!/usrbin/env bash
 # Function to display subdomain information
 
+=======
+#!/bin/bash
+
+# Function to display subdomain information
+>>>>>>> refs/remotes/origin/main
 display_subdomain_info() {
     local domain=$1
     local subdomain=$2
