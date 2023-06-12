@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# A script that prints the name of the current user on a system by accepting one argument
+
+sudo -u "$1" whoami
