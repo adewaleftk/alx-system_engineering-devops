@@ -1,21 +1,6 @@
 #!/usr/bin/env bash
-# Fixing a bug of being unable to listen on port 80
+# Configures an Nginx server to listen on port 80.
 
-# Start Nginx if not running
-sudo service nginx status || sudo service nginx start
-
-# Check Nginx configuration
-sudo nginx -t
-
-# Verify if port 80 is being listened to
-sudo netstat -tuln | grep 80
-
-# Check for other processes listening on port 80
-sudo lsof -i :80
-
-# Update Nginx configuration to listen on port 80
-sudo sed -i 's/listen\s*80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
-
-# Restart Nginx
-sudo service nginx restart
-
+rm /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx restart
