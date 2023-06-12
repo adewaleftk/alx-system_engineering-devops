@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Debugging port 80 with a shorter code
+
+sudo service nginx stop
+sudo sed -i 's/listen\s*80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
+sudo service nginx start
+
