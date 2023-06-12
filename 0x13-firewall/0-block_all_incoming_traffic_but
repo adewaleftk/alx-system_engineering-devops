@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Firewall configuration to block all incoming traffics except TCP ports 22(SSH), 443(HTTPS SSL) and 80(HTTP)
+
+# Reset ufw to default settings
+sudo ufw reset
+
+# Set default incoming policy to deny
+sudo ufw default deny incoming
+
+# Allow SSH (port 22)
+sudo ufw allow 22/tcp
+
+# Allow HTTPS (port 443)
+sudo ufw allow 443/tcp
+
+# Allow HTTP (port 80)
+sudo ufw allow 80/tcp
+
+# Enable ufw firewall
+sudo ufw enable
+
