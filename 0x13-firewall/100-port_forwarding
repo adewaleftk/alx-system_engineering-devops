@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Firewall configuration for redirecting traffic from port 8080/TCP to port 80/TCP
+
+# Block all incoming traffic except SSH, HTTPS, and HTTP
+sudo ufw default deny incoming
+sudo ufw allow 22/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 80/tcp
+
+# Enable UFW firewall
+sudo ufw enable
+
+# Configure port forwarding from 8080 to 80
+sudo sed -i 's/# End required lines/\n*nat\n:PREROUTING ACCEPT [0:0]\n-A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80\nCOMMIT\n\n# End required lines/' /etc/ufw/before.rules
+
+# Restart UFW to apply changes
+sudo service ufw restart
+
+# Check UFW status
+sudo ufw status
