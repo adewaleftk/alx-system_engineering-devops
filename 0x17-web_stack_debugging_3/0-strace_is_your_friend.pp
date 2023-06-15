@@ -1,23 +1,5 @@
-class apache {
-  package { 'apache2':
-    ensure => installed,
-  }
-
-  service { 'apache2':
-    ensure => running,
-    enable => true,
-  }
+# Fix typo in WordPress settings file
+exec { 'Fix typo in filename':
+  command  => 'sudo sed -i "s/.phpp/.php/" /var/www/html/wp-settings.php',
+  provider => shell,
 }
-
-class { 'apache': }
-
-exec { 'strace_apache':
-  command => 'strace -p $(pgrep apache2)',
-  path    => '/bin:/usr/bin',
-  logoutput => true,
-  subscribe => Class['apache'],
-}
-
-# Add any additional resources or configurations to fix the issue
-
-
