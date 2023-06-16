@@ -1,59 +1,6 @@
-# Puppet manifest to install and configure Nginx server with 301 redirect and custom 404 page
-# customizing error 404
+# Installs a Nginx server
 
-# Install Nginx package
-package { 'nginx':
-  ensure => 'installed',
+exec {'install':
+  provider => shell,
+  command  => 'sudo apt-get -y update ; sudo apt-get -y install nginx ; echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html ; sudo sed -i "s/server_name _;/server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/adewaleftk permanent;/" /etc/nginx/sites-available/default ; sudo service nginx start',
 }
-
-# Replace default Nginx config file with custom config file
-file { '/etc/nginx/sites-available/default':
-  ensure  => 'file',
-  content => "
-    server {
-      listen 80 default_server;
-      listen [::]:80 default_server;
-
-      root /var/www/html;
-      index index.html;
-
-      server_name _;
-
-      location / {
-        try_files \$uri \$uri/ =404;
-      }
-
-      location /redirect_me {
-        return 301 https://www.example.com/;
-      }
-
-      error_page 404 /404.html;
-      location = /404.html {
-        internal;
-        root /var/www/html;
-        echo 'Ceci n\'est pas une page.';
-      }
-    }
-  ",
-}
-
-# Restart Nginx service
-exec { 'nginx-restart':
-  command => '/usr/sbin/service nginx restart',
-  path    => '/usr/bin:/usr/sbin:/bin',
-  require => [Package['nginx'], File['/etc/nginx/sites-available/default']],
-}
-
-# Verify Nginx is running and serving expected page
-file { '/var/www/html/index.html':
-  ensure  => 'file',
-  content => 'Hello World!',
-}
-
-# Test Nginx is serving expected page
-exec { 'test-nginx':
-  command => 'curl -s localhost | grep -q "Hello World!"',
-  path    => '/usr/bin:/usr/sbin:/bin',
-  require => [Package['curl'], Service['nginx'], File['/var/www/html/index.html']],
-}
-
